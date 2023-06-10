@@ -22,7 +22,7 @@ class GNBA:
                     return False
         return True
     
-    def __init__(self, elememtary_sets: list[list[LTLBaseFormula]], atomic_formulas: list[LTLAtomicFormula], cl: list[LTLAtomicFormula], root_formula: LTLBaseFormula):
+    def __init__(self, elememtary_sets: list[list[LTLBaseFormula]], atomic_formulas: list[LTLAtomicFormula], cl: list[LTLAtomicFormula], root_formula: LTLBaseFormula) -> None:
         self.nodes = []
         self.start_nodes = []
         for elememtary_set in elememtary_sets:
@@ -37,7 +37,7 @@ class GNBA:
                 if GNBA.check_edge(node.id_formula, dst.id_formula, cl):
                     # get the index of node in self.nodes
                     node.edges.append(BAEdge(symbol, dst))
-        self.finish_function = []
+        self.accept_sets = []
         for formula in cl:
             if isinstance(formula, LTLUntilFormula):
                 node_set = []
@@ -46,4 +46,4 @@ class GNBA:
                     right_in = formula_in_list(formula.right, node.id_formula)
                     if not phi_in or right_in:
                         node_set.append(node)
-                self.finish_function.append(node_set)
+                self.accept_sets.append(node_set)
