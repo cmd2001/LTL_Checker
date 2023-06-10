@@ -1,6 +1,5 @@
 from utils.LTLFormula import *
 
-
 def neg_logic_operator(o: LTLFormulaBinaryOperator) -> LTLFormulaBinaryOperator:
     if o == LTLFormulaBinaryOperator.AND:
         return LTLFormulaBinaryOperator.OR
@@ -89,8 +88,12 @@ def check_elementary(s: list[LTLBaseFormula], cl: list[LTLBaseFormula]):
             left_in = formula_in_list(f.left, s)
             right_in = formula_in_list(f.right, s)
         if isinstance(f, LTLLogicFormula) and f.operator == LTLFormulaBinaryOperator.AND:
-            if f_in != left_in or f_in != right_in or left_in != right_in:
-                return False
+            if f_in:
+                if not left_in or not right_in:
+                    return False
+            if left_in and right_in:
+                if not f_in:
+                    return False
         if isinstance(f, LTLUntilFormula):
             if right_in and not f_in:
                 return False
@@ -108,3 +111,33 @@ def gen_subsets(s: list) -> list:
         ret.append(g)
         ret.append([s[0]] + g)
     return ret
+
+def gen_elementary_subsets(s: list[LTLBaseFormula]):
+    ret = []
+    subsets = gen_subsets(s)
+    for subset in subsets:
+        if check_elementary(subset, s):
+            ret.append(subset)
+    return ret
+
+def collect_atomic_formula(f: LTLBaseFormula):
+    if isinstance(f, LTLAtomicFormula):
+        return [f]
+    ret = []
+    for sub_f in f.sub_formula():
+        ret = merge_formula_list(ret, collect_atomic_formula(sub_f))
+    return ret
+
+def cross_formula_list(a: list[LTLBaseFormula], b: list[LTLBaseFormula]) -> list[LTLBaseFormula]:
+    ret = []
+    for f in a:
+        if formula_in_list(f, b):
+            ret.append(f)
+    return ret
+
+def print_formula_list(l: list[LTLBaseFormula]):
+    for i in range(len(l)):
+        print(l[i].__str__(), end="")
+        if i != len(l) - 1:
+            print(" | ", end="")
+    print()

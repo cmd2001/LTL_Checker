@@ -3,8 +3,9 @@ from antlr4 import *
 from parser.LTLLexer import LTLLexer
 from parser.LTLParser import LTLParser
 from parser.LTLVisitor import LTLVisitor
-from utils.FormulaUtil import closure, gen_subsets, check_elementary
-
+from utils.FormulaUtil import closure, gen_elementary_subsets, collect_atomic_formula, print_formula_list
+from utils.LTLFormula import *
+from GNBA.GNBA import GNBA
 
 def main(argv):
     input_stream = FileStream(argv[1])
@@ -15,16 +16,15 @@ def main(argv):
     root_formula = LTLVisitor().visit(tree)
     print(root_formula.__str__())
     cl = closure(root_formula)
-    for f in cl:
-        print(f.__str__(), end=' || ')
-    print()
+    print_formula_list(cl)
     print(len(cl))
-    sss = gen_subsets(cl)
-    for ss in sss:
-        if check_elementary(ss, cl):
-            for f in ss:
-                print(f.__str__(), end=' || ')
-            print()
+    
+    elementary_sets = gen_elementary_subsets(cl)
+    print(len(elementary_sets))
+    atomic_formulas = collect_atomic_formula(root_formula)
+    print_formula_list(atomic_formulas)
+    gnba = GNBA(elementary_sets, atomic_formulas, cl, root_formula)
+    print(len(gnba.nodes))
 
 
 if __name__ == '__main__':
