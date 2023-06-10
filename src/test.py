@@ -1,8 +1,8 @@
 import sys
 from antlr4 import *
-from parser.LTLLexer import LTLLexer
-from parser.LTLParser import LTLParser
-from parser.LTLVisitor import LTLVisitor
+from Parser.LTLLexer import LTLLexer
+from Parser.LTLParser import LTLParser
+from Parser.LTLVisitor import LTLVisitor
 from Formula.utils import closure, gen_elementary_subsets, collect_atomic_formula, print_formula_list
 from Formula.LTLFormula import *
 from BA.GNBA import GNBA
