@@ -1,4 +1,4 @@
-from utils.LTLFormula import *
+from Formula.LTLFormula import *
 
 def neg_logic_operator(o: LTLFormulaBinaryOperator) -> LTLFormulaBinaryOperator:
     if o == LTLFormulaBinaryOperator.AND:

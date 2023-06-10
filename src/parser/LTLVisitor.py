@@ -7,7 +7,7 @@ else:
 
 # This class defines a complete generic visitor for a parse tree produced by LTLParser.
 
-from utils.LTLFormula import *
+from Formula.LTLFormula import *
 
 
 class LTLVisitor(ParseTreeVisitor):

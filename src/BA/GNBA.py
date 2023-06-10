@@ -1,16 +1,8 @@
-from utils.LTLFormula import *
-from utils.FormulaUtil import cross_formula_list, formula_in_list, print_formula_list
+from Formula.LTLFormula import *
+from Formula.utils import cross_formula_list, formula_in_list, print_formula_list
+from BA.utils import BANode, BAEdge
 
 class GNBA:
-    class GNBANode:
-        def __init__(self, id_formula: list[LTLBaseFormula]) -> None:
-            self.id_formula = id_formula
-            self.edges = []
-    class GNBAEdge:
-        def __init__(self, symbol_formula: list[LTLBaseFormula], dst: list) -> None:
-            self.symbol_formula = symbol_formula
-            self.dst = dst
-    
     @staticmethod
     def check_edge(src: list[LTLBaseFormula], dst: list[LTLBaseFormula], cl: list[LTLBaseFormula]) -> bool:
         for f in cl:
@@ -34,7 +26,7 @@ class GNBA:
         self.nodes = []
         self.start_nodes = []
         for elememtary_set in elememtary_sets:
-            node = GNBA.GNBANode(elememtary_set)
+            node = BANode(elememtary_set)
             self.nodes.append(node)
             if formula_in_list(root_formula, elememtary_set):
                 self.start_nodes.append(node)
@@ -44,9 +36,7 @@ class GNBA:
             for dst in self.nodes:
                 if GNBA.check_edge(node.id_formula, dst.id_formula, cl):
                     # get the index of node in self.nodes
-                    id1 = self.nodes.index(node)
-                    id2 = self.nodes.index(dst)
-                    node.edges.append(GNBA.GNBAEdge(symbol, dst))
+                    node.edges.append(BAEdge(symbol, dst))
         self.finish_function = []
         for formula in cl:
             if isinstance(formula, LTLUntilFormula):

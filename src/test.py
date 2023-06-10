@@ -3,9 +3,9 @@ from antlr4 import *
 from parser.LTLLexer import LTLLexer
 from parser.LTLParser import LTLParser
 from parser.LTLVisitor import LTLVisitor
-from utils.FormulaUtil import closure, gen_elementary_subsets, collect_atomic_formula, print_formula_list
-from utils.LTLFormula import *
-from GNBA.GNBA import GNBA
+from Formula.utils import closure, gen_elementary_subsets, collect_atomic_formula, print_formula_list
+from Formula.LTLFormula import *
+from BA.GNBA import GNBA
 
 def main(argv):
     input_stream = FileStream(argv[1])
