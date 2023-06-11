@@ -3,7 +3,7 @@ from Formula.utils import print_formula_list, formula_list_equal
 
 
 class TS():
-    def change_init(self, init_states: list[list] | None) -> None:
+    def change_init(self, init_states: list[int] | None) -> None:
         if init_states == None:
             self.init_states = self.back_init
             return
@@ -17,6 +17,8 @@ class TS():
         for i in range(n_states):
             prop = []
             for ap in ap_states[i]:
+                if ap == -1:
+                    continue
                 prop.append(ap_map[ap])
             self.states.append(TSState(i, prop))
             if i in init_states:

@@ -45,14 +45,14 @@ def is_equal(a: LTLBaseFormula, b: LTLBaseFormula) -> bool:
 
     # a -> b = !b -> !a
 
-    if isinstance(a, LTLIMPLFormula):
-        if not isinstance(b, LTLIMPLFormula):
-            return False
-        if is_equal(a.left, a.left) and is_equal(a.right, b.right):
-            return True
-        if is_equal(build_not_formula(a.right), b.left) and is_equal(build_not_formula(a.left), b.right):
-            return True
-        return False
+    # if isinstance(a, LTLIMPLFormula):
+    #     if not isinstance(b, LTLIMPLFormula):
+    #         return False
+    #     if is_equal(a.left, a.left) and is_equal(a.right, b.right):
+    #         return True
+    #     if is_equal(build_not_formula(a.right), b.left) and is_equal(build_not_formula(a.left), b.right):
+    #         return True
+    #     return False
 
     return False
 
@@ -80,6 +80,9 @@ def closure(f: LTLBaseFormula):
 
 
 def check_elementary(s: list[LTLBaseFormula], cl: list[LTLBaseFormula]):
+    true = LTLTrueFormula()
+    if formula_in_list(true, s) != formula_in_list(true, cl):
+        return False
     for f in cl:
         f_in = formula_in_list(f, s)
         negf_in = formula_in_list(build_not_formula(f), s)

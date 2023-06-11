@@ -30,7 +30,7 @@ class LTLVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by LTLParser#g_formula.
     def visitG_formula(self, ctx: LTLParser.G_formulaContext):
         # print('visit G')
-        return LTLAlwaysFormula(self.visit(ctx.formula()))
+        return build_always_formula(self.visit(ctx.formula()))
 
     # Visit a parse tree produced by LTLParser#atomic_proposition.
     def visitAtomic_proposition(self, ctx: LTLParser.Atomic_propositionContext):
@@ -50,16 +50,16 @@ class LTLVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by LTLParser#implication_formula.
     def visitImplication_formula(self, ctx: LTLParser.Implication_formulaContext):
         # print('visit IMPL')
-        return LTLIMPLFormula(self.visit(ctx.formula()[0]), self.visit(ctx.formula()[1]))
+        return build_impl_formula(self.visit(ctx.formula()[0]), self.visit(ctx.formula()[1]))
 
     # Visit a parse tree produced by LTLParser#f_formula.
     def visitF_formula(self, ctx: LTLParser.F_formulaContext):
         # print('visit F')
-        return LTLEventuallyFormula(self.visit(ctx.formula()))
+        return build_eventually_formula(self.visit(ctx.formula()))
 
     # Visit a parse tree produced by LTLParser#logic_true.
     def visitLogic_true(self, ctx: LTLParser.Logic_trueContext):
-        return self.visitChildren(ctx)
+        return LTLTrueFormula()
 
 
 del LTLParser

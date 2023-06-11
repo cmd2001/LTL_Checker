@@ -42,6 +42,8 @@ def build_NBA(formula_str: str):
     parser = LTLParser(stream)
     tree = parser.formula()
     root_formula = LTLVisitor().visit(tree)
+    root_formula = build_not_formula(root_formula)
+    # print(root_formula)
     cl = closure(root_formula)
     # print_formula_list(cl)
 
@@ -75,13 +77,15 @@ def main():
     # ts.print()
     bcs = parse_benchmark()
     for bc in bcs:
+        # print(bc[1])
         nba, root_formula, atomic_formulas = build_NBA(bc[1])
         # nba.print()
         ts.change_init(bc[0])
+        # ts.print()
         producted_ts = ProductTS(ts, nba, atomic_formulas)
         # producted_ts.print()
         ans = producted_ts.nested_dfs(root_formula)
-        print(ans)
+        print(int(ans))
 
 
 if __name__ == '__main__':

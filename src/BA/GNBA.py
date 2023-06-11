@@ -31,10 +31,16 @@ class GNBA:
             self.nodes.append(node)
             if formula_in_list(root_formula, elememtary_set):
                 self.start_nodes.append(node)
+            # print_formula_list(elememtary_set)
         for node in self.nodes:
             symbol = cross_formula_list(node.id_formula, atomic_formulas)
+            # print_formula_list(symbol)
             for dst in self.nodes:
                 if GNBA.check_edge(node.id_formula, dst.id_formula, cl):
+                    # get the index of node in self.nodes
+                    # print('adding edge from {} to {} with symbols:'.format(
+                    #     self.nodes.index(node), self.nodes.index(dst)), end='')
+                    # print_formula_list(symbol)
                     node.edges.append(BAEdge(symbol, dst))
         self.accept_sets = []
         for formula in cl:

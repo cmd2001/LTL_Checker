@@ -63,3 +63,5 @@ class NBA:
             for edge in self.nodes[i].edges:
                 print(self.nodes.index(edge.dst), end=' ')
             print()
+            # for edge in self.nodes[i].edges:
+            #     print_formula_list(edge.symbol_formula)

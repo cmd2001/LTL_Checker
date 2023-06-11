@@ -18,9 +18,17 @@ class ProductTS():
                 self.states.append(ProductTSState(ts.states[i], nba.nodes[j]))
 
         for s0 in ts.init_states:
+            # print('s0 : {}'.format(ts.states.index(s0)))
             for q0 in nba.start_nodes:
                 for edge in q0.edges:
-                    if formula_list_equal(s0.prop, edge.symbol_formula):
+                    prop = cross_formula_list(s0.prop, atomic_formulas)
+                    symbol_formula = cross_formula_list(
+                        edge.symbol_formula, atomic_formulas)
+                    # print('prop:', end=' ')
+                    # print_formula_list(prop)
+                    # print('symbol_formula:', end=' ')
+                    # print_formula_list(symbol_formula)
+                    if formula_list_equal(prop, symbol_formula):
                         q = edge.dst
                         self.init_states.append(
                             self.states[self.state_index(s0, q)])
@@ -32,7 +40,9 @@ class ProductTS():
                     for edge in q.edges:
                         p = edge.dst
                         prop = cross_formula_list(t.prop, atomic_formulas)
-                        if formula_list_equal(prop, edge.symbol_formula):
+                        symbol_formula = cross_formula_list(
+                            edge.symbol_formula, atomic_formulas)
+                        if formula_list_equal(prop, symbol_formula):
                             self.states[self.state_index(s, q)].trans.append(
                                 ProductTSTransition(self.states[self.state_index(t, p)]))
 
