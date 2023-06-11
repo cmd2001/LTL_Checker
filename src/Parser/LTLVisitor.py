@@ -57,5 +57,9 @@ class LTLVisitor(ParseTreeVisitor):
         # print('visit F')
         return LTLEventuallyFormula(self.visit(ctx.formula()))
 
+    # Visit a parse tree produced by LTLParser#logic_true.
+    def visitLogic_true(self, ctx: LTLParser.Logic_trueContext):
+        return self.visitChildren(ctx)
+
 
 del LTLParser

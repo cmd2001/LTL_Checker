@@ -8,6 +8,7 @@ formula
     | formula op = (AndOp | OrOp) formula   # logic_formula
     | formula '->' formula                  # implication_formula
     | formula 'U' formula                   # u_formula
+    | LogicTrue                             # logic_true
     | Identifier                             # atomic_proposition
     | '(' formula ')'                       # formula_in_parentheses
     ;
@@ -23,6 +24,10 @@ AndOp
 
 OrOp
     : '\\/'
+    ;
+
+LogicTrue:
+    'true'
     ;
 
 WS : [ \t\n\r]+ -> skip ;
