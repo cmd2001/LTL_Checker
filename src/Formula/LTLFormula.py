@@ -50,6 +50,12 @@ class LTLNotFormula(LTLUnaryFormula):
         super().__init__(LTLFormulaUnaryOperator.NOT, child)
 
 
+def build_not_formula(child: LTLBaseFormula):
+    if isinstance(child, LTLNotFormula):
+        return child.child
+    return LTLNotFormula(child)
+
+
 class LTLNextFormula(LTLUnaryFormula):
     def __init__(self, child: LTLBaseFormula):
         super().__init__(LTLFormulaUnaryOperator.X, child)

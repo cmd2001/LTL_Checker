@@ -25,7 +25,7 @@ class LTLVisitor(ParseTreeVisitor):
     # Visit a parse tree produced by LTLParser#not_formula.
     def visitNot_formula(self, ctx: LTLParser.Not_formulaContext):
         # print('visit not')
-        return LTLNotFormula(self.visit(ctx.formula()))
+        return build_not_formula(self.visit(ctx.formula()))
 
     # Visit a parse tree produced by LTLParser#g_formula.
     def visitG_formula(self, ctx: LTLParser.G_formulaContext):

@@ -52,7 +52,7 @@ def build_NBA(formula_str: str):
     # gnba.print()
     nba = NBA(gnba)
     # nba.print()
-    return nba, atomic_formulas
+    return nba, root_formula, atomic_formulas
 
 
 def parse_benchmark():
@@ -75,11 +75,13 @@ def main():
     # ts.print()
     bcs = parse_benchmark()
     for bc in bcs:
-        nba, atomic_formulas = build_NBA(bc[1])
+        nba, root_formula, atomic_formulas = build_NBA(bc[1])
         # nba.print()
         ts.change_init(bc[0])
         producted_ts = ProductTS(ts, nba, atomic_formulas)
-        producted_ts.print()
+        # producted_ts.print()
+        ans = producted_ts.nested_dfs(root_formula)
+        print(ans)
 
 
 if __name__ == '__main__':

@@ -22,7 +22,7 @@ def is_equal(a: LTLBaseFormula, b: LTLBaseFormula) -> bool:
         # test !(T/\V) = (!T)\/(!V)
         if isinstance(a.child, LTLLogicFormula):
             tempFormula = LTLLogicFormula(neg_logic_operator(
-                a.child.operator), LTLNotFormula(a.child.left), LTLNotFormula(a.child.right))
+                a.child.operator), build_not_formula(a.child.left), build_not_formula(a.child.right))
             if is_equal(tempFormula, b):
                 return True
         return a.__str__() == b.__str__()
@@ -50,7 +50,7 @@ def is_equal(a: LTLBaseFormula, b: LTLBaseFormula) -> bool:
             return False
         if is_equal(a.left, a.left) and is_equal(a.right, b.right):
             return True
-        if is_equal(LTLNotFormula(a.right), b.left) and is_equal(LTLNotFormula(a.left), b.right):
+        if is_equal(build_not_formula(a.right), b.left) and is_equal(build_not_formula(a.left), b.right):
             return True
         return False
 
@@ -73,7 +73,7 @@ def merge_formula_list(a: list[LTLBaseFormula], b: list[LTLBaseFormula]) -> list
 
 
 def closure(f: LTLBaseFormula):
-    ret = [f, LTLNotFormula(f)]
+    ret = [f, build_not_formula(f)]
     for sub_formula in f.sub_formula():
         ret = merge_formula_list(ret, closure(sub_formula))
     return ret
@@ -82,19 +82,24 @@ def closure(f: LTLBaseFormula):
 def check_elementary(s: list[LTLBaseFormula], cl: list[LTLBaseFormula]):
     for f in cl:
         f_in = formula_in_list(f, s)
-        negf_in = formula_in_list(LTLNotFormula(f), s)
+        negf_in = formula_in_list(build_not_formula(f), s)
         if f_in == negf_in:
             return False
+        if isinstance(f, LTLNotFormula) and isinstance(f.child, LTLLogicFormula) and f.child.operator == LTLFormulaBinaryOperator.OR:
+            left_in = formula_in_list(build_not_formula(f.child.left), s)
+            right_in = formula_in_list(build_not_formula(f.child.right), s)
+            if f_in and (not left_in or not right_in):
+                return False
+            if (left_in and right_in) and not f_in:
+                return False
         if isinstance(f, LTLLogicFormula) or isinstance(f, LTLUntilFormula):
             left_in = formula_in_list(f.left, s)
             right_in = formula_in_list(f.right, s)
         if isinstance(f, LTLLogicFormula) and f.operator == LTLFormulaBinaryOperator.AND:
-            if f_in:
-                if not left_in or not right_in:
-                    return False
-            if left_in and right_in:
-                if not f_in:
-                    return False
+            if f_in and (not left_in or not right_in):
+                return False
+            if (left_in and right_in) and not f_in:
+                return False
         if isinstance(f, LTLUntilFormula):
             if right_in and not f_in:
                 return False
