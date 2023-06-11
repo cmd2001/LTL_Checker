@@ -1,13 +1,15 @@
 from TS.utils import *
-from Formula.utils import print_formula_list
+from Formula.utils import print_formula_list, formula_list_equal
 
 
 class TS():
-    def __init__(self, states, init_states) -> None:
-        self.states = states
+    def change_init(self, init_states: list[list] | None) -> None:
+        if init_states == None:
+            self.init_states = self.back_init
+            return
         self.init_states = []
         for i in init_states:
-            self.init_states.append(states[i])
+            self.init_states.append(self.states[i])
 
     def __init__(self, n_states: int, init_states: list[int], action_map: dict[int, str], ap_map: dict[int, LTLBaseFormula], trans: list[tuple[int, int, int]], ap_states: list[list[int]]) -> None:
         self.states = []
@@ -22,6 +24,7 @@ class TS():
         for src, act, dst in trans:
             trans = TSTransition(action_map[act], self.states[dst])
             self.states[src].trans.append(trans)
+        self.back_init = self.init_states.copy()
 
     def print(self):
         print('Printing Transition System...')

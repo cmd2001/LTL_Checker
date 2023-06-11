@@ -42,7 +42,7 @@ class NBA:
                         BAEdge(edge.symbol_formula, get_node(dst_layer, edge.dst)))
 
     def print(self):
-        print('Pring GNBA')
+        print('Printing GNBA')
         print('n_nodes: {}, n_start_nodes: {}, n_accept_set: {}'.format(
             len(self.nodes), len(self.start_nodes), len(self.accept_set)))
         print('start nodes are:')

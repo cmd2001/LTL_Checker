@@ -31,12 +31,10 @@ class GNBA:
             self.nodes.append(node)
             if formula_in_list(root_formula, elememtary_set):
                 self.start_nodes.append(node)
-            # print_formula_list(elememtary_set)
         for node in self.nodes:
             symbol = cross_formula_list(node.id_formula, atomic_formulas)
             for dst in self.nodes:
                 if GNBA.check_edge(node.id_formula, dst.id_formula, cl):
-                    # get the index of node in self.nodes
                     node.edges.append(BAEdge(symbol, dst))
         self.accept_sets = []
         for formula in cl:
@@ -50,7 +48,7 @@ class GNBA:
                 self.accept_sets.append(node_set)
 
     def print(self):
-        print('Pring GNBA')
+        print('Printing GNBA')
         print('n_nodes: {}, n_start_nodes: {}, n_accept_sets: {}'.format(
             len(self.nodes), len(self.start_nodes), len(self.accept_sets)))
         print('start nodes are:')

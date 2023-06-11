@@ -8,6 +8,7 @@ from Formula.LTLFormula import *
 from BA.GNBA import GNBA
 from BA.NBA import NBA
 from TS.TS import TS
+from TS.ProductTS import ProductTS
 
 TS_PATH = 'TS.txt' if len(sys.argv) < 2 else sys.argv[1]
 BENCHMARK_PATH = 'benchmark.txt' if len(sys.argv) < 3 else sys.argv[2]
@@ -50,8 +51,8 @@ def build_NBA(formula_str: str):
     gnba = GNBA(elementary_sets, atomic_formulas, cl, root_formula)
     # gnba.print()
     nba = NBA(gnba)
-    nba.print()
-    return nba
+    # nba.print()
+    return nba, atomic_formulas
 
 
 def parse_benchmark():
@@ -71,12 +72,14 @@ def parse_benchmark():
 
 def main():
     ts = build_ts()
-    ts.print()
+    # ts.print()
     bcs = parse_benchmark()
-    print(bcs)
     for bc in bcs:
-        print(bc[1])
-        build_NBA(bc[1])
+        nba, atomic_formulas = build_NBA(bc[1])
+        # nba.print()
+        ts.change_init(bc[0])
+        producted_ts = ProductTS(ts, nba, atomic_formulas)
+        producted_ts.print()
 
 
 if __name__ == '__main__':
