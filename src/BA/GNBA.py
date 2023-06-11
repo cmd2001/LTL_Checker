@@ -2,6 +2,7 @@ from Formula.LTLFormula import *
 from Formula.utils import cross_formula_list, formula_in_list, print_formula_list
 from BA.utils import BANode, BAEdge
 
+
 class GNBA:
     @staticmethod
     def check_edge(src: list[LTLBaseFormula], dst: list[LTLBaseFormula], cl: list[LTLBaseFormula]) -> bool:
@@ -21,7 +22,7 @@ class GNBA:
                 if flag1 != flag2:
                     return False
         return True
-    
+
     def __init__(self, elememtary_sets: list[list[LTLBaseFormula]], atomic_formulas: list[LTLAtomicFormula], cl: list[LTLAtomicFormula], root_formula: LTLBaseFormula) -> None:
         self.nodes = []
         self.start_nodes = []
@@ -47,3 +48,27 @@ class GNBA:
                     if not phi_in or right_in:
                         node_set.append(node)
                 self.accept_sets.append(node_set)
+
+    def print(self):
+        print('Pring GNBA')
+        print('n_nodes: {}, n_start_nodes: {}, n_accept_sets: {}'.format(
+            len(self.nodes), len(self.start_nodes), len(self.accept_sets)))
+        print('start nodes are:')
+        for n in self.start_nodes:
+            print(self.nodes.index(n), end=' ')
+        print()
+        print('accept sets are:')
+        for accept_set in self.accept_sets:
+            for i in accept_set:
+                print(self.nodes.index(i), end=' ')
+            print()
+        print('formula set at each node are:')
+        for i in range(len(self.nodes)):
+            print('{}: '.format(i), end='')
+            print_formula_list(self.nodes[i].id_formula)
+        print('edges are:')
+        for i in range(len(self.nodes)):
+            print('{}: '.format(i), end='')
+            for edge in self.nodes[i].edges:
+                print(self.nodes.index(edge.dst), end=' ')
+            print()
